@@ -1,5 +1,9 @@
 # Experiment configuration and execution
 
+For the first run, follow [Start an experiment](start-an-experiment.md). This page
+is the reference for configuration options and execution behavior. Make changes
+in your own experiment fork, with its remote pointing to your repository.
+
 Experiment definitions are TOML. Paths are relative to the TOML file containing
 them. Prompt context files are relative to the experiment file. `${NAME}` expands
 an environment variable during preparation; an unset value is an error.

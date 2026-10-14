@@ -1,5 +1,8 @@
 # Research protocol template
 
+Fill this in inside your own experiment repository, created from the boilerplate.
+Keep experiment-specific definitions and results in that fork, not in the template.
+
 Complete this before collecting the research results. Preserve later amendments
 as new versions and identify analyses developed after inspecting outputs.
 

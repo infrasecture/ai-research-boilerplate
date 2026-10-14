@@ -1,100 +1,132 @@
-# AI research boilerplate
+# AI research experiment template
 
-A small, configurable repository for experiments driven by prompts and coding
-agent sessions. It provides data ingestion, frozen samples and workloads,
-parallel execution, resumable attempts, offline evaluation, and traceable reports.
-Included adapters are **Codex**, **Claude Code**, and a deterministic **mock**.
+Use this repository as the starting point for **your own experiment repository**.
+It contains the code to prepare inputs, run coding agents in parallel, save their
+outputs, and produce reports. Prompts, models, and harness settings are configurable.
 
-Python 3.11+ and a POSIX host are required. Dependencies are pinned in `uv.lock`.
-Real harness CLIs and their credentials are installed separately. The demo needs
-neither credentials nor paid model calls.
+**Clone this template, make that copy your experiment, and push experiment work
+only to your own repository. Do not push experiment-specific changes or results
+back to the template.** Related conditions and repeated runs belong together in
+one experiment repository; a separate research project gets a separate copy.
 
-## Try the complete workflow
+## 1. Make your experiment repository
+
+Replace `TEMPLATE_URL_OR_PATH` with this template's Git URL or local directory:
+
+```bash
+git clone TEMPLATE_URL_OR_PATH my-experiment
+cd my-experiment
+git remote remove origin
+```
+
+You now have your own working copy with the template's history, and no configured
+push destination. This is the experiment fork. Keep the history so you can identify
+which template revision you started from. You do not need to delete `.git` or run
+`git init` again.
+
+If you use your hosting service's **Fork** button instead, clone your fork and
+check that `git remote -v` points to your fork, not to the original template.
+In that case, keep your fork's `origin`.
+
+## 2. Check that it works
+
+Install Python 3.11+ and `uv` on a Linux or macOS host, then run:
 
 ```bash
 uv sync --locked
 uv run --locked python scripts/demo.py
 ```
 
-Open `demo-output/comparison/report.md`. The script prepares eight arithmetic
-examples, runs two mock conditions with four concurrent workloads each, saves
-every attempt, and produces per-sample scores and a comparison. The arithmetic
-fixture scores 1.0; the deliberately constant-zero baseline scores 0.25. These are
-pipeline checks, not AI benchmark results. Use a new `--output` directory to repeat.
+Open **`demo-output/comparison/report.md`**.
 
-## Run the stages yourself
+This runs a complete example using a mock agent. It needs no API key and makes no
+paid model calls. It prepares eight arithmetic questions, executes two mock
+conditions, and generates tables and a report. The expected scores are 1.0 and
+0.25; these check the pipeline, not an AI model's ability.
 
-All paths below are relative to this repository. Preparation never invokes a model.
-
-```bash
-uv run airesearch prepare-data --source examples/arithmetic.jsonl --output data/prepared/demo-v1
-uv run airesearch sample --dataset data/prepared/demo-v1 --seed 42 --output samples/demo-v1
-uv run airesearch package --sample samples/demo-v1 --batch-size 2 --output workloads/demo-v1
-uv run airesearch prepare --config configs/experiments/mock.toml --output runs/mock-r1
-uv run airesearch preflight --run runs/mock-r1
-uv run airesearch run --run runs/mock-r1 --jobs 4
-uv run airesearch collect --run runs/mock-r1 --output evaluations/mock-r1-collected
-uv run airesearch evaluate --collection evaluations/mock-r1-collected --output reports/mock-r1
-```
-
-Use `uv run airesearch --help` and subcommand `--help` for all flags.
-
-For a real experiment, set `RESEARCH_MODEL` to an exact model identifier available
-to your account, copy and edit an experiment config, and select its harness profile:
+To repeat it, choose a new directory:
 
 ```bash
-export RESEARCH_MODEL='your-model-identifier'
-uv run airesearch prepare --config configs/experiments/codex.toml --output runs/codex-r1
-uv run airesearch preflight --run runs/codex-r1
-uv run airesearch run --run runs/codex-r1
+uv run --locked python scripts/demo.py --output demo-output-2
 ```
 
-Replace the config with `configs/experiments/claude-code.toml` for Claude Code.
-`run` starts real model sessions for those profiles. Models, prompts, schemas,
-harness options, environment, concurrency, and timeouts are configuration inputs.
-Preflight calls only CLI version/help commands; it does not verify authentication
-or model availability through a paid request.
+## 3. Set up and run your research
 
-The included local environment separates task directories but **does not prevent
-the agent from reading other host files**. For experiments that depend on hiding
-reference answers, use the [Docker environment](docs/harnesses.md#docker-execution)
-or an equivalently isolated external host. No filesystem isolation claim is made
-for a local working directory or a read-only write policy.
+Follow **[Start an experiment](docs/start-an-experiment.md)**. It gives the exact
+file edits and commands, in order:
 
-## Repository map
+1. Write your research question and prepare your input examples.
+2. Choose the prompt, response format, harness, and model.
+3. Prepare the inputs and run the agent sessions.
+4. Collect the outputs and open the report.
 
-| Path | Purpose |
+For an ordinary experiment, you mostly edit:
+
+| File or directory | What you put there |
 | --- | --- |
-| `protocol.md` | Research protocol template and measurement conventions |
-| `configs/` | Experiment, harness, environment, and sweep inputs |
-| `prompts/`, `schemas/` | Versioned instructions and response contracts |
-| `examples/` | Tiny synthetic dataset for the executable demo |
-| `data/`, `samples/`, `workloads/` | Gathered data and frozen prepared selections |
-| `src/airesearch/` | Preparation, adapters, scheduling, collection, scoring |
-| `runs/` | Frozen inputs and append-only execution attempts |
-| `evaluations/`, `reports/` | Rebuildable, versioned analysis outputs |
-| `scripts/`, `tests/` | Full workflow demonstration and regression checks |
+| `protocol.md` | Your research question, comparisons, and scoring rules |
+| `data/raw/` | Your original examples and reference answers |
+| `prompts/` | Instructions for the agent |
+| `schemas/` | The format the agent must return |
+| `configs/experiments/` | Which data, prompt, model, and harness to use |
 
-Generated data and runs are ignored by Git. Keep their sealed bundles in durable
-artifact storage; Git alone is not their backup. Prompts, configurations, code,
-documentation, lockfile, and synthetic fixtures belong in Git. Raw responses and
-logs may contain the task data, so publish them according to your dataset terms.
+You normally do not need to edit the framework code in `src/`.
 
-## Documentation
+## 4. Save work to your experiment's repository
 
-- [Architecture and invariants](docs/architecture.md)
-- [Gathering and preparing data](docs/data.md)
-- [Configuring experiments and sweeps](docs/experiments.md)
-- [Harness adapters and execution environments](docs/harnesses.md)
-- [Artifacts, scoring, and comparisons](docs/evaluation.md)
-- [Extending and testing the boilerplate](docs/development.md)
-
-## Verify locally
+If you removed `origin` in step 1, create a new empty repository on your Git host.
+Replace `YOUR_EXPERIMENT_REPOSITORY_URL` below with that new repository's URL:
 
 ```bash
-bash scripts/test.sh
+git remote add origin YOUR_EXPERIMENT_REPOSITORY_URL
+git remote -v
 ```
 
-Tests use mock processes and recorded event fixtures. They never call a model.
-Live Codex/Claude execution and Docker isolation must be smoke-tested on the
-experiment host with the intended CLI versions, image, and credentials.
+Check that the destination is **your experiment repository**. Then commit your
+experiment definition and push it there:
+
+```bash
+git add README.md protocol.md configs prompts schemas
+git commit -m "Define my experiment"
+git push -u origin HEAD
+```
+
+If you cloned a hosting-service fork, its `origin` is already configured; skip
+`git remote add`. Update this README to describe your experiment before committing.
+Template improvements can be contributed separately. Research-specific prompts,
+datasets, runs, and conclusions belong to the experiment repository and its storage.
+
+Generated data, runs, and reports are ignored by Git by default. **A Git push does
+not back up those artifacts.** Store their complete directories in your experiment's
+artifact storage. If you want to commit a final report, copy it and its supporting
+tables into a tracked directory such as `publications/` and add that directory
+explicitly. Keep credentials out of Git.
+
+## What the directory names mean
+
+| Name | Meaning |
+| --- | --- |
+| **Sample** | An example selected for the experiment |
+| **Workload** | Inputs assigned to one agent session; start with one example per session |
+| **Run** | One execution of the configured experiment across all its workloads |
+| **Attempt** | One session execution, including a separately retained retry |
+| `scripts/` | Ready-to-run helpers: `demo.py` runs the example; `test.sh` checks the framework |
+| `src/airesearch/` | The framework implementation behind the `airesearch` command |
+| `runs/` | Saved configurations, prompts, inputs, logs, responses, and attempt status |
+| `evaluations/` | Collected data ready for scoring |
+| `reports/` | Scores, comparison tables, and written reports |
+
+For example, 20 examples with one example per session produce 20 workloads.
+`--jobs 4` runs at most four of those sessions at once. It does not combine them
+into a shared conversation.
+
+## Further reference
+
+- [Gathering and preparing data](docs/data.md)
+- [Configuration, repeated runs, and retries](docs/experiments.md)
+- [Codex, Claude Code, and execution environments](docs/harnesses.md)
+- [Scoring and comparisons](docs/evaluation.md)
+- [Architecture](docs/architecture.md) and [extending the framework](docs/development.md)
+
+Run `bash scripts/test.sh` to check the framework. Tests use local fixtures and
+make no model calls.
