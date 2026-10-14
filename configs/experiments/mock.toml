@@ -1,0 +1,13 @@
+id = "mock-arithmetic"
+workload = "../../workloads/demo-v1"
+prompt = "../../prompts/arithmetic.md"
+response_schema = "../../schemas/predictions.schema.json"
+harness_profile = "../harnesses/mock.toml"
+environment = "../environments/local.toml"
+model = "deterministic-fixture"
+timeout_seconds = 30
+max_parallel = 4
+replicates = 1
+
+[context]
+protocol = "../../prompts/protocol.md"

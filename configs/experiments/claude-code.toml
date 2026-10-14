@@ -1,0 +1,13 @@
+id = "claude-arithmetic"
+workload = "../../workloads/demo-v1"
+prompt = "../../prompts/arithmetic.md"
+response_schema = "../../schemas/predictions.schema.json"
+harness_profile = "../harnesses/claude-code.toml"
+environment = "../environments/local.toml"
+model = "${RESEARCH_MODEL}"
+timeout_seconds = 1800
+max_parallel = 2
+replicates = 3
+
+[context]
+protocol = "../../prompts/protocol.md"

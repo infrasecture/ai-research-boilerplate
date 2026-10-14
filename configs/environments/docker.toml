@@ -1,0 +1,5 @@
+mode = "docker"
+image = "${RESEARCH_IMAGE}"
+network = "bridge"
+# Credentials are passed by name via docker --env, never embedded in argv.
+inherit_env = ["CODEX_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN"]

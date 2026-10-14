@@ -1,0 +1,4 @@
+mode = "local"
+# Values are inherited at execution time and never written to configuration
+# snapshots. HOME enables the CLI's normal authentication stores.
+inherit_env = ["PATH", "HOME", "TMPDIR", "LANG", "CODEX_HOME", "CODEX_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN", "HTTPS_PROXY", "HTTP_PROXY", "NO_PROXY", "SSL_CERT_FILE"]

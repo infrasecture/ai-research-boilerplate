@@ -1,0 +1,13 @@
+adapter = "codex"
+executable = "codex"
+# Optional: pin an exact output of codex --version.
+# version = "codex-cli 0.160.0"
+
+[options]
+sandbox = "read-only"
+# reasoning_effort = "high"
+
+# Values here are TOML expressions forwarded as separate -c arguments.
+[options.config]
+project_doc_max_bytes = "0"
+web_search = '"disabled"'

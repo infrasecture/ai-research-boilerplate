@@ -1,0 +1,16 @@
+id = "mock-zero-baseline"
+workload = "../../workloads/demo-v1"
+prompt = "../../prompts/arithmetic.md"
+response_schema = "../../schemas/predictions.schema.json"
+harness_profile = "../harnesses/mock.toml"
+environment = "../environments/local.toml"
+model = "constant-zero-fixture"
+timeout_seconds = 30
+max_parallel = 4
+replicates = 1
+
+[harness_options]
+strategy = "constant_zero"
+
+[context]
+protocol = "../../prompts/protocol.md"

@@ -1,0 +1,11 @@
+adapter = "claude-code"
+executable = "claude"
+# Optional: pin the exact output of claude --version.
+# version = "2.1.204 (Claude Code)"
+
+[options]
+# The demo input is inline, so no tools are needed. For file tasks, choose tools
+# explicitly, for example "Read,Glob,Grep", and use container isolation.
+tools = ""
+# effort = "high"
+# max_budget_usd = 5.0

@@ -1,0 +1,8 @@
+{"id":"add-001","input":{"operation":"add","a":2,"b":3},"reference":5,"group":"addition"}
+{"id":"add-002","input":{"operation":"add","a":-7,"b":7},"reference":0,"group":"addition"}
+{"id":"add-003","input":{"operation":"add","a":125,"b":31},"reference":156,"group":"addition"}
+{"id":"add-004","input":{"operation":"add","a":-5,"b":-4},"reference":-9,"group":"addition"}
+{"id":"mul-001","input":{"operation":"multiply","a":4,"b":6},"reference":24,"group":"multiplication"}
+{"id":"mul-002","input":{"operation":"multiply","a":0,"b":99},"reference":0,"group":"multiplication"}
+{"id":"mul-003","input":{"operation":"multiply","a":-3,"b":8},"reference":-24,"group":"multiplication"}
+{"id":"mul-004","input":{"operation":"multiply","a":12,"b":12},"reference":144,"group":"multiplication"}
